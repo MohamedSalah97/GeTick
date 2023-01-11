@@ -1,0 +1,6 @@
+[submodule "GeTick-common"]
+	path = GeTick-common
+	url = https://github.com/MohamedSalah97/GeTick-common.git
+[submodule "common-"]
+	path = common-
+	url = https://github.com/MohamedSalah97/common-.git
