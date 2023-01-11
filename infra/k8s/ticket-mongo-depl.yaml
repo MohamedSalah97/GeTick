@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-mongo
+  template:
+    metadata:
+      labels:
+        app: ticket-mongo
+    spec:
+      volumes:
+        - name: ticket-mongo-data
+          persistentVolumeClaim:
+            claimName: ticket-mongo-pvc
+      containers:
+        - name: ticket-mongo
+          image: mongo
+          ports:
+            - containerPort: 27017
+              name: 'ticket-mongo'
+          volumeMounts:
+            - name: ticket-mongo-data
+              mountPath: '/data/db'
+---
+# ClusterIp Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-mongo-srv
+spec:
+  selector:
+    app: ticket-mongo
+  type: ClusterIP
+  ports:
+    - name: ticket-mongo-db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
+---
+# Persistent Volume Claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ticket-mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

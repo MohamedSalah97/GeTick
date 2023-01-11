@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders-mongo
+  template:
+    metadata:
+      labels:
+        app: orders-mongo
+    spec:
+      volumes:
+        - name: orders-mongo-data
+          persistentVolumeClaim:
+            claimName: orders-mongo-pvc
+      containers:
+        - name: orders-mongo
+          image: mongo
+          ports:
+            - containerPort: 27017
+              name: 'orders-mongo'
+          volumeMounts:
+            - name: orders-mongo-data
+              mountPath: '/data/db'
+---
+# ClusterIp Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-mongo-srv
+spec:
+  selector:
+    app: orders-mongo
+  type: ClusterIP
+  ports:
+    - name: orders-mongo-db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
+---
+# Persistent Volume Claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: orders-mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
