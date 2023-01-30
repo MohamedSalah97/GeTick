@@ -1,12 +1,15 @@
 # GeTick
 a Microservices app to sell and buy tickets online
 
-To better understanding of events flow and how it works with different services please check the diagrams folder 
+**To better understanding of events flow and how it works with different services please check the diagrams folder**
 
-#Design 
-![Screenshot (14)](https://user-images.githubusercontent.com/45404933/215602413-158704b5-56a3-4f0c-925b-b740a5ca5fe8.png)
+# Design 
 
-#Build 
+![Screenshot (14)](https://user-images.githubusercontent.com/45404933/215605400-61883106-30bf-411c-b431-57483dfc02f4.png)
+
+
+# Build 
+
 1- For every service build the Docker image
 ```
 docker build -t <yourDockerId>/<imageName> .
